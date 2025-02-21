@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900">
       <div className="text-center p-8 bg-white rounded-lg shadow-md">
         <h1 className="text-4xl font-bold mb-8 text-blue-600">Welcome to Task Manager</h1>
         <div className="space-x-4">
