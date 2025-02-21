@@ -82,6 +82,16 @@ export class ApiService {
       throw err
     }
   }
+
+  async deleteTask(taskID : number):Promise<ApiResult<string>>{
+    try{
+      const res=await this.api.delete<ApiResult<string>>(`/users/tasks?id=${taskID}`)
+      return res.data
+    }catch(err){
+      console.log(err)
+      throw err
+    }
+  }
 }
 
 export const apiService = new ApiService();

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { apiService } from "../api/api_service";
 import { Task, TaskStatus } from "../api/dto";
-import { Pencil, Play, Plus } from "lucide-react";
+import { Trash, Pencil, Play, Plus } from "lucide-react";
 
 const TasksPage: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -23,7 +23,7 @@ const TasksPage: React.FC = () => {
   }>({
     title: "",
     description: "",
-    status: TaskStatus.Todo, // Default status
+    status: TaskStatus.Todo,
   });
 
   useEffect(() => {
@@ -91,6 +91,21 @@ const TasksPage: React.FC = () => {
 
     setIsAddingTask(false);
     setNewTask({ title: "", description: "", status: TaskStatus.Todo });
+  };
+
+  const handleDelete = async (taskId: number) => {
+    try {
+      const res = await apiService.deleteTask(taskId);
+      if (res.success) {
+        setTasks((prevTasks) => prevTasks.filter((task) => task.ID !== taskId));
+      } else {
+        console.error("Failed to delete task:", res.err);
+        alert("Failed to delete the task.");
+      }
+    } catch (error) {
+      console.error("Error deleting task:", error);
+      alert("An unexpected error occurred while deleting the task.");
+    }
   };
 
   return (
@@ -219,6 +234,7 @@ const TasksPage: React.FC = () => {
                 </p>
               ))}
             </div>
+            {/* Actions */}
             <div className="flex gap-2">
               {editingTask === task.ID ? (
                 <Play
@@ -226,16 +242,22 @@ const TasksPage: React.FC = () => {
                   onClick={() => handleSubmit(task.ID ? task.ID : 0)}
                 />
               ) : (
-                <Pencil
-                  className="text-gray-600 cursor-pointer hover:scale-110 transition-transform"
-                  onClick={() => handleEdit(task)}
-                />
+                <>
+                  <Pencil
+                    className="text-gray-600 cursor-pointer hover:scale-110 transition-transform"
+                    onClick={() => handleEdit(task)}
+                  />
+                  {/* Delete Icon */}
+                  <Trash
+                    className="text-red-600 cursor-pointer hover:scale-110 transition-transform"
+                    onClick={() => handleDelete(task.ID ?? 0)}
+                  />
+                </>
               )}
             </div>
           </div>
         ))
       )}
-
     </div>
   );
 };
