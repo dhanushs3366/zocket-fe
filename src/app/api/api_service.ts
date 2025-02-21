@@ -72,6 +72,16 @@ export class ApiService {
       throw err
     }
   }
+
+  async createTask(task:Task):Promise<ApiResult<Task>>{
+    try{
+      const res=await this.api.post<ApiResult<Task>>("/users/tasks",task)
+      return res.data
+    }catch(err){
+      console.log(err)
+      throw err
+    }
+  }
 }
 
 export const apiService = new ApiService();

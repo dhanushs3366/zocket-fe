@@ -5,7 +5,7 @@ export interface ApiResult<T> {
   }
 
   export interface DefaultModel {
-    ID: number;
+    ID?: number;
     createdAt?: string;
     updatedAt?: string;
     deletedAt?: string | null; 
